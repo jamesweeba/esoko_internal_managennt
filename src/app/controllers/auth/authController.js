@@ -9,7 +9,7 @@ import {
   validatePassword,
   validateUserExist,
   validateUserNotExist,
-} from '../../services/service.js';
+} from '../../services/userService.js';
 
 export async function register(req, res) {
   let { username, password, email } = req.body;

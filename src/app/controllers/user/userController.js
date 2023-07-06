@@ -2,7 +2,7 @@ import {
   validateUserExist,
   updateUser,
   findUserById,
-} from "../../services/service.js";
+} from "../../services/userService";
 import { handleError } from "../../../utils/helper.js";
 
 export async function getProfile({ userId }, res) {
