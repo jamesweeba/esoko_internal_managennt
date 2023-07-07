@@ -1,15 +1,13 @@
 import bcrypt from 'bcrypt';
 import { PrismaClient } from '@prisma/client';
+import createError from 'http-errors';
 
 const prisma = new PrismaClient();
-
 export async function validateUserNotExist(email) {
   const existingUser = await prisma.Users.findUnique({
     where: { email: email },
   });
-  if (existingUser) {
-    throw new Error('Username or email already exists. Please sign in instead');
-  }
+  if (existingUser) throw createError.Conflict('Username or email already exists. Please sign in instead');
 }
 
 export async function hashPassword(password) {
@@ -27,16 +25,13 @@ export async function findUserByUsername(username) {
 }
 
 export function validateUserExist(user) {
-  if (!user) {
-    throw new Error('User not found');
-  }
+  if (!user) throw createError.NotFound();
 }
 
 export function validatePassword(password, hashedPassword) {
   const isPasswordValid = bcrypt.compareSync(password, hashedPassword);
-  if (!isPasswordValid) {
-    throw new Error('Invalid username or password');
-  }
+  if (!isPasswordValid) throw createError.Conflict('Invalid username or password');
+
 }
 
 export async function findUserById(userId) {
@@ -57,9 +52,7 @@ export function validateCurrentPassword(currentPassword, hashedPassword) {
     currentPassword,
     hashedPassword
   );
-  if (!isCurrentPasswordValid) {
-    throw new Error('Invalid current password');
-  }
+  if (!isCurrentPasswordValid) throw createError.Conflict('Invalid current password');
 }
 
 

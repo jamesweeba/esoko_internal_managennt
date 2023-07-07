@@ -1,7 +1,6 @@
 import dotenv from 'dotenv'
 
 dotenv.config();
-
 const errorMiddleware = (err, req, res, next) => {
     const errorStatus = err.status || 500;
     const errorMessage = err.message || 'Something went wrong!';
@@ -10,11 +9,11 @@ const errorMiddleware = (err, req, res, next) => {
       res.status(errorStatus).json({
         message: errorMessage,
         error: err,
-        stack: err.stack,
       });
     } else {
       res.status(errorStatus).json({ message: errorMessage });
     }
+  next();
   };
   
   export default errorMiddleware;

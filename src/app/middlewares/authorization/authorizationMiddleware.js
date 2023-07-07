@@ -2,11 +2,9 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 dotenv.config();
-
 // Middleware to verify the access token
 export const verifyToken = (req, res, next) => {
   const token = extractTokenFromHeader(req.headers.authorization);
-
   try {
     if (!token) {
       return res.status(401).json({ message: 'Unauthorized' });
