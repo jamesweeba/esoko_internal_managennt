@@ -6,14 +6,12 @@ const authSchema = Joi.object({
     .max(20)
     .required(),
   password: Joi.string()
-    .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),  
-  access_token: [
-    Joi.string(),
-    Joi.number()
-  ],
+    .min(2)
+    .required(),
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
-}).with('username', 'password')
-  .xor('password', 'access_token')
+    .lowercase()
+    .required(),
+})
 
 export { authSchema };

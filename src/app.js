@@ -24,16 +24,17 @@ app.get('/', (req, res) => {
     'version': 2
   });
 });
+//error handler
 app.use(async (req, res, next) => {
   next(createError.NotFound('this route does not exist'))
 });
-//error handler
 app.use(errorMiddleware);
 // Starting the server
-app.listen(PORT,'192.168.1.125',(err) => {
+// '192.168.1.125'
+app.listen(PORT,(err) => {
   if (err) {
-    console.error(err);
+    console.debug(err);
     return;
   }
-  console.debug(`Server listening on ${PORT}`);
+  console.log(`Server listening on ${PORT}`);
 });

@@ -16,7 +16,7 @@ import {
 export async function register(req, res, next) {
   try {
     const { error, value } = authSchema.validate(req.body);
-    if (error) throw createError.BadRequest(error.message);
+    if (error) throw createError.BadRequest('Invalid input field');
     const { username, password, email } = value;
     await validateUserNotExist(email);
     const hashedPassword = await hashPassword(password);
@@ -45,12 +45,11 @@ export async function login(req, res, next) {
   }
 }
 
-
 export async function changePassword(req, res ,next) {
   const userId = req.userId;
   try {
     const { error, value } = authSchema.validate(req.body);
-    if (error) throw createError.BadRequest(error.message);
+    if (error) throw createError.BadRequest('Invalid input field');
     const { currentPassword, newPassword } = value;
     const user = await findUserById(userId);
     validateUserExist(user);

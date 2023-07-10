@@ -6,15 +6,9 @@ dotenv.config();
 export const verifyToken = (req, res, next) => {
   const token = extractTokenFromHeader(req.headers.authorization);
   try {
-    if (!token) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
-
+    if (!token) res.status(401).json({ message: 'Unauthorized' });
     const decodedToken = verifyAccessToken(token);
-    if (!decodedToken) {
-      return res.status(401).json({ message: 'Invalid access token' });
-    }
-
+    if (!decodedToken) res.status(401).json({ message: 'Invalid access token' });
     attachUserAndAuthFlagToRequest(decodedToken.id, req);
     return next();
   } catch (error) {
@@ -52,11 +46,7 @@ function attachUserAndAuthFlagToRequest(userId, req) {
 export const authorize = (role) => {
   return function (req, res, next) {
     const { role: userRole } = req.user;
-
-    if (userRole !== role) {
-      return res.status(403).json({ error: 'Forbidden' });
-    }
-
+    if (userRole !== role) res.status(403).json({ error: 'Forbidden' });
     next();
   };
 };
