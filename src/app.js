@@ -6,6 +6,9 @@ import dotenv from 'dotenv';
 import createError from 'http-errors';
 import userRoutes from './app/routes/user/userRoutes.js';
 import authRoutes from './app/routes/auth/authRoutes.js';
+import organizationRoutes from './app/routes/organizations/organizationRoutes.js';
+import statisticsRoutes from './app/routes/statistics/statisticsRoutes.js';
+import transactionRoutes from './app/routes/transactions/transactionRoutes.js';
 import errorMiddleware from './app/middlewares/error/errorMiddleware.js';
 
 dotenv.config();
@@ -17,8 +20,11 @@ app.use(morgan('common'));
 app.use(helmet()); 
 app.use(cors());
 // Routes
-app.use("/api/user", userRoutes);
-app.use("/api/auth", authRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/organization', organizationRoutes);
+app.use('/api/statistics', statisticsRoutes);
+app.use('/api/transaction', transactionRoutes);
 app.get('/', (req, res) => {
   res.send({
     'version': 2

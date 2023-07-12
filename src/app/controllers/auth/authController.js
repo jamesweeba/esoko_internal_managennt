@@ -49,7 +49,7 @@ export async function changePassword(req, res ,next) {
   const userId = req.userId;
   try {
     const { error, value } = authSchema.validate(req.body);
-    if (error) throw createError.BadRequest('Invalid input field');
+    if (error && error.isJoi) throw createError.BadRequest('Invalid input field');
     const { currentPassword, newPassword } = value;
     const user = await findUserById(userId);
     validateUserExist(user);
@@ -58,6 +58,7 @@ export async function changePassword(req, res ,next) {
     await updateUser(userId, { password: hashedNewPassword });
     return res.status(200).json({ message: 'Password changed successfully' });
   } catch (error) {
+    if (error.isJoi === true) error.status = 422
     next(error);
   }
 }
