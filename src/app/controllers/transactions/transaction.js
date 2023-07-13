@@ -1,41 +1,17 @@
-import axios from 'axios';
-import redisClient from '../utils/redis';
+import { cacheData,fetchDataFromEndpoint,retrieveDataFromCache } from '../../../utils/helper.js';
 
-const API_BASE_URL = 'https://api.example.com'; // Replace with your transaction API base URL
-
-const fetchFromEndpoint = async (endpointUrl) => {
-  try {
-    const response = await axios.get(endpointUrl);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching data from endpoint:', error);
-    throw new Error(`Failed to fetch data from ${endpointUrl}`);
-  }
-};
-
-const cacheData = (key, data) => {
-  redisClient.set(key, JSON.stringify(data), 'EX', 300); // Set expiration time (in seconds)
-};
-
-const retrieveDataFromCache = async (key) => {
-  try {
-    const cachedData = await redisClient.getAsync(key);
-    return JSON.parse(cachedData);
-  } catch (error) {
-    console.error(`Error retrieving data from Redis cache (${key}):`, error);
-    throw new Error(`Failed to retrieve data from cache (${key})`);
-  }
-};
+const API_BASE_URL = 'https://api.example.com'; 
+const cacheKey = 'transactionData';
 
 const getTransactionData = async (req, res) => {
   try {
-    const cachedData = await retrieveDataFromCache('transactionData');
+    const cachedData = await retrieveDataFromCache(cacheKey);
     if (cachedData) {
       return res.json(cachedData);
     }
 
-    const recentPayments = await fetchData(`${API_BASE_URL}/recentPayments`);
-    const totalTransactions = await fetchData(`${API_BASE_URL}/totalTransactions`);
+    const recentPayments = await fetchDataFromEndpoint(`${API_BASE_URL}/recentPayments`);
+    const totalTransactions = await fetchDataFromEndpoint(`${API_BASE_URL}/totalTransactions`);
     const revenuePerQuarter = calculateRevenuePerQuarter(totalTransactions);
 
     const transactionData = {
@@ -44,7 +20,7 @@ const getTransactionData = async (req, res) => {
       revenuePerQuarter
     };
 
-    cacheData('transactionData', transactionData);
+    cacheData(cacheKey, transactionData);
     return res.json(transactionData);
   } catch (error) {
     console.error('Error fetching transaction data:', error);

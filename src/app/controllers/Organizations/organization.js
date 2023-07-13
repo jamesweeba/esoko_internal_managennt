@@ -1,5 +1,4 @@
-import axios from 'axios';
-import redisClient from '../utils/redis';
+import { cacheData,fetchDataFromEndpoint,retrieveDataFromCache } from '../../../utils/helper.js';
 
 const API_BASE_URL = 'https://api.example.com'; 
 const cacheKey = 'organizationData';
@@ -7,10 +6,10 @@ const cacheKey = 'organizationData';
 const fetchOrganizationData = async () => {
   try {
     const [usersResponse, organizationResponse, smsBalanceResponse, formsResponse] = await Promise.all([
-      axios.get(`${API_BASE_URL}/users`),
-      axios.get(`${API_BASE_URL}/organization`),
-      axios.get(`${API_BASE_URL}/sms/balance`),
-      axios.get(`${API_BASE_URL}/forms?status=active`)
+      fetchDataFromEndpoint(`${API_BASE_URL}/users`),
+      fetchDataFromEndpoint(`${API_BASE_URL}/organization`),
+      fetchDataFromEndpoint(`${API_BASE_URL}/sms/balance`),
+      fetchDataFromEndpoint(`${API_BASE_URL}/forms?status=active`)
     ]);
 
     const totalUsers = usersResponse.data.length;
@@ -31,7 +30,7 @@ const fetchOrganizationData = async () => {
       activeForms
     };
 
-    redisClient.set(cacheKey, JSON.stringify(organizationData), 'EX', 300);
+    cacheData(cacheKey,aggregatedData);
     return organizationData;
   } catch (error) {
     console.error('Error fetching organization data:', error);
@@ -41,10 +40,9 @@ const fetchOrganizationData = async () => {
 
 const getOrganizationData = async (req, res) => {
   try {
-    const cachedData = await redisClient.getAsync(cacheKey);
+    const cachedData = await retrieveDataFromCache(cacheKey);
     if (cachedData) {
-      const organizationData = JSON.parse(cachedData);
-      return res.json(organizationData);
+      return res.json(cachedData);
     }
       
     const organizationData = await fetchOrganizationData();
