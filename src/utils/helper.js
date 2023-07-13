@@ -24,3 +24,10 @@ export const fetchDataFromEndpoint = async (endpointUrl) => {
       throw new Error('Failed to retrieve data from cache');
     }
   };
+
+  export const handleRejectedResponse = (response) => {
+    if (response.status === 'rejected') {
+      throw new Error('Failed to fetch data');
+    }
+    return response.value;
+  };

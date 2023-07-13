@@ -11,7 +11,7 @@ import {
   validatePassword,
   validateUserExist,
   validateUserNotExist,
-} from '../../services/userService.js';
+} from '../../services/auth/authService.js';
 
 export async function register(req, res, next) {
   try {
