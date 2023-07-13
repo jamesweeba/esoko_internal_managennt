@@ -173,7 +173,8 @@
 }
 
 ```
-Get Client Profile
+## Get Client Profile
+
 - Retrieve the profile of a specific client.
 
 **Route:** `GET /clients/profile?clientId=id`
@@ -204,7 +205,9 @@ Get Client Profile
 
 ```
 ## Get Client Insyt Data
+
 - Retrieve Insyt data for a specific client.
+
 **Route:** `GET /clients/insyt-data?clientId=id`
 
 **200 Response:**
@@ -233,6 +236,7 @@ Get Client Profile
 
 ```
 ## Get Client Push Data
+
 - Retrieve Push data for a specific client.
 
   
@@ -272,7 +276,8 @@ Get Client Profile
 }
 
 ```
-Get Client Transactions
+## Get Client Transactions
+
 - Retrieve transaction records for a specific client.
 
   

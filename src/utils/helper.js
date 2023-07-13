@@ -20,7 +20,7 @@ export const fetchDataFromEndpoint = async (endpointUrl) => {
       const cachedData = await redisClient.getAsync(cacheKey);
       return JSON.parse(cachedData);
     } catch (error) {
-      console.error('Error retrieving data from Redis cache:', error);
+      console.debug('Error retrieving data from Redis cache:', error);
       throw new Error('Failed to retrieve data from cache');
     }
   };

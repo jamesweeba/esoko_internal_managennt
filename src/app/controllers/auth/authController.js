@@ -4,7 +4,7 @@ import { authSchema } from '../../../utils/validation_schema.js'
 import {
   createUser,
   findUserById,
-  findUserByUsername,
+  findUserByEmail,
   hashPassword,
   updateUser,
   validateCurrentPassword,
@@ -34,8 +34,8 @@ export async function login(req, res, next) {
     if (error && error.isJoi) {
       throw createError.BadRequest('Invalid username or password field');
     }
-    const { username, password } = value;
-    const user = await findUserByUsername(username);
+    const { email, password } = value;
+    const user = await findUserByEmail(email);
     validateUserExist(user);
     validatePassword(password, user.password);
     const token = createToken(user.id);

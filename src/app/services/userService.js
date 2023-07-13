@@ -4,9 +4,7 @@ import createError from "http-errors";
 
 const prisma = new PrismaClient();
 export async function validateUserNotExist(email) {
-  const existingUser = await prisma.Users.findUnique({
-    where: { email: email },
-  });
+  const existingUser = findUserByEmail(email)
   if (existingUser)
     throw createError.Conflict(
       "Username or email already exists. Please sign in instead"
@@ -21,9 +19,9 @@ export async function createUser({ username, email, password }) {
   await prisma.Users.create({ data: { username, email, password } });
 }
 
-export async function findUserByUsername(username) {
+export async function findUserByEmail(email) {
   return prisma.Users.findUnique({
-    where: { username: username },
+    where: { email: email },
   });
 }
 
