@@ -3,7 +3,7 @@ import { getProfile, updateProfile} from '../../controllers/users/userController
 import { verifyToken } from '../../middlewares/authorization/authorizationMiddleware.js';
 
 const router = express.Router();
-router.get('/profile', verifyToken, getProfile);
+router.get('/profile:id', verifyToken, getProfile);
 router.put('/profile', verifyToken, updateProfile);
 
 export default router;

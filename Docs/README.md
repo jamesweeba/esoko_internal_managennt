@@ -26,10 +26,94 @@
   "error": "Invalid credentials"
 }
 ```
+
+## Update User
+- Update user information.
+
+**Route:** `PUT /users/{user_id}`
+
+**Request Params:**
+`user_id (string): The ID of the user.`
+
+**200 Response:**
+```json
+{
+  "message": "User updated successfully"
+}
+
+```
+**400 Response:**
+```json
+{
+  "errorCode": "user_not_found",
+  "message": "User not found"
+}
+
+```
+
+## Return User by ID
+- Retrieve user information by ID.
+
+**Route:** `GET /users/{user_id}`
+
+**Request Params:**
+`user_id (string): The ID of the user.`
+
+**200 Response:**
+```json
+{
+  "userId": "user_id",
+  "username": "username",
+  "email": "email@example.com",
+  "firstName": "John",
+  "lastName": "Doe"
+}
+
+```
+**400 Response:**
+```json
+{
+  "errorCode": "user_not_found",
+  "message": "User not found"
+}
+
+```
+
+## Change User Roles
+- Update user roles.
+
+**Route:** `PUT /users/{user_name}/roles`
+
+**Request Params:**
+`user_name (string): The username of the user.`
+
+**Request Body:**
+```json
+{
+  "roles": ["role1", "role2"]
+}
+
+```
+**200 Response:**
+```json
+{
+  "message": "User roles updated successfully"
+}
+
+```
+**400 Response:**
+```json
+{
+  "errorCode": "user_not_found",
+  "message": "User not found"
+}
+
+```
+
 ## Get Administrators
 - Retrieve information about administrators.
 
-**Route:** `GET /auth/admins`
+**Route:** `GET /admins`
 
 **200 Response:**
 ```json
@@ -38,7 +122,8 @@
     {
       "adminId": "admin_id",
       "name": "admin_name",
-      "email": "admin_email"
+      "role": "admin_email",
+      "department":"admin_department"
     }
   ]
 }
