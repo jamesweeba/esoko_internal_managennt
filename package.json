@@ -10,7 +10,6 @@
     "dev": "nodemon src/app.js",
     "start": "node src/app.js ",
     "build": "nvm use 16.13 && npm install && npm run build"
-
   },
   "keywords": [],
   "author": "",
