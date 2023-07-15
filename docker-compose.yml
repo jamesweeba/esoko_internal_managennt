@@ -1,0 +1,13 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - JWT_SECRET=VbA49GS2i0P8sLz5mCxj1N0hF7eR9dWy
+      - PORT=8000
+      - NODE_ENV=development
+      - DATABASE_URL=postgres://sam_esoko:zrw5Tta3ESNDRIz8mUbOjfykCVX7tYnJ@dpg-cip9c8dgkuvrtoce09ag-a.oregon-postgres.render.com/esoko_manager
+    ports:
+      - 8000:8000
