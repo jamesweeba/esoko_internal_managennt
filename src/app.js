@@ -20,11 +20,11 @@ app.use(morgan('common'));
 app.use(helmet()); 
 app.use(cors());
 // Routes
-app.use('/api/user', userRoutes);
+// app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/organization', organizationRoutes);
-app.use('/api/statistics', statisticsRoutes);
-app.use('/api/transaction', transactionRoutes);
+// app.use('/api/organization', organizationRoutes);
+// app.use('/api/statistics', statisticsRoutes);
+// app.use('/api/transaction', transactionRoutes);
 app.get('/', (req, res) => {
   res.send({
     'version': 2
@@ -37,7 +37,7 @@ app.use(async (req, res, next) => {
 app.use(errorMiddleware);
 // Starting the server
 // '192.168.1.125'
-app.listen(PORT,(err) => {
+app.listen(PORT, (err) => {
   if (err) {
     console.debug(err);
     return;

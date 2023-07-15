@@ -28,16 +28,6 @@ const getTransactionData = async (req, res) => {
   }
 };
 
-const fetchData = async (endpointUrl) => {
-  try {
-    const data = await fetchFromEndpoint(endpointUrl);
-    const processedData = processData(data);
-    return processedData;
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    throw new Error('Failed to fetch data');
-  }
-};
 
 const processData = (data) => {
   const processedData = data.map((item) => ({

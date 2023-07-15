@@ -1,58 +1,103 @@
 import bcrypt from "bcrypt";
 import { PrismaClient } from "@prisma/client";
+import { v4 as uuidv4 } from 'uuid';
 import createError from "http-errors";
 
 const prisma = new PrismaClient();
+
+export async function findUserByEmail(email) {
+  try {
+    return await prisma.users.findUnique({
+      where: { email: email },
+    });
+  } catch (error) {
+    console.error('Error finding user by email:', error);
+    throw createError.InternalServerError('Failed to find user');
+  }
+}
+
 export async function validateUserNotExist(email) {
-  const existingUser = findUserByEmail(email)
-  if (existingUser)
-    throw createError.Conflict(
-      "Username or email already exists. Please sign in instead"
-    );
+  try {
+    const existingUser = await findUserByEmail(email);
+    if (existingUser) {
+      throw createError.Conflict(
+        'Username or email already exists. Please sign in instead'
+      );
+    }
+  } catch (error) {
+    console.error('Error validating user:', error);
+    throw createError.InternalServerError('Failed to validate user');
+  }
 }
 
 export async function hashPassword(password) {
-  return await bcrypt.hash(password, 10);
+  try {
+    return await bcrypt.hash(password, 10);
+  } catch (error) {
+    console.error('Error hashing password:', error);
+    throw createError.InternalServerError('Failed to hash password');
+  }
 }
 
 export async function createUser({ username, email, password }) {
-  await prisma.Users.create({ data: { username, email, password } });
-}
-
-export async function findUserByEmail(email) {
-  return prisma.Users.findUnique({
-    where: { email: email },
-  });
+  const uuid = uuidv4();
+  try {
+    await prisma.users.create({
+      data: {
+        uuid,
+        username,
+        email,
+        password,
+      },
+    });
+  } catch (error) {
+    console.error('Error creating user:', error);
+    throw createError.InternalServerError('Failed to create user');
+  }
 }
 
 export function validateUserExist(user) {
-  if (!user) throw createError.NotFound();
+  if (!user) {
+    throw createError.NotFound();
+  }
 }
 
 export function validatePassword(password, hashedPassword) {
   const isPasswordValid = bcrypt.compareSync(password, hashedPassword);
-  if (!isPasswordValid)
+  if (!isPasswordValid) {
     throw createError.Conflict("Invalid username or password");
+  }
 }
 
 export async function findUserById(userId) {
-  const user = await prisma.Users.findUnique({ where: { id: userId } });
-  return user;
+  try {
+    const user = await prisma.users.findUnique({ where: { id: userId } });
+    return user;
+  } catch (error) {
+    console.error('Error finding user by ID:', error);
+    throw createError.InternalServerError('Failed to find user by ID');
+  }
 }
 
 export async function updateUser(userId, data) {
-  const updatedUser = await prisma.Users.update({
-    where: { id: userId },
-    data,
-  });
-  return updatedUser;
+  try {
+    const updatedUser = await prisma.users.update({
+      where: { id: userId },
+      data,
+    });
+    return updatedUser;
+  } catch (error) {
+    console.error('Error updating user:', error);
+    throw createError.InternalServerError('Failed to update user');
+  }
 }
 
 export function validateCurrentPassword(currentPassword, hashedPassword) {
   const isCurrentPasswordValid = bcrypt.compareSync(
     currentPassword,
     hashedPassword
-  )
-  if (!isCurrentPasswordValid)
+  );
+  if (!isCurrentPasswordValid) {
     throw createError.Conflict("Invalid password");
+  }
 }

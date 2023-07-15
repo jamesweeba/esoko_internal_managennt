@@ -14,7 +14,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^4.16.2",
+    "@prisma/client": "^5.0.0",
+    "amqplib": "^0.10.3",
+    "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "cookies": "^0.8.0",
@@ -29,10 +31,11 @@
     "morgan": "^1.10.0",
     "pg": "^8.11.0",
     "pg-hstore": "^2.3.4",
-    "prisma": "^4.16.2",
-    "redis": "^4.6.7"
+    "redis": "^4.6.7",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "prisma": "^5.0.0"
   }
 }

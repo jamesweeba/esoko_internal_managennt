@@ -1,13 +1,21 @@
 import axios from 'axios';
-import redisClient from '../utils/redis';
+import redisClient from '../utils/redis.js';
 
-export const fetchDataFromEndpoint = async (endpointUrl) => {
-    try {
-      const response = await axios.get(endpointUrl);
+export const fetchDataFromEndpoint = async (url, method, token) => {
+  const headers = {
+    'Authorization': `Bearer ${token}`
+  };
+  const config = {
+    method: method,
+    url: url,
+    headers: headers,
+  };
+  try {
+      const response = await axios(config)
       return response.data;
     } catch (error) {
-      console.error('Error fetching data from endpoint:', error);
-      throw new Error(`Failed to fetch data from ${endpointUrl}`);
+      console.log('Error fetching data from endpoint:', error.response.data.message);
+      throw new Error(`Failed to fetch data from ${url}`);
     }
   };
 
