@@ -1,5 +1,5 @@
 # Use the official Node.js 14 image as the base image
-FROM node:14
+FROM node:16.13
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -14,7 +14,7 @@ RUN npm install --production
 COPY . .
 
 # Expose the port your application listens on
-EXPOSE 5000
+EXPOSE 8000
 
 # Set the environment variable for production
 ENV NODE_ENV=production
