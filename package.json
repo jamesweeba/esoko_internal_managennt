@@ -8,8 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "generate": "prisma generate --schema=prisma/schema.prisma",
     "dev": "nodemon src/app.js",
-    "start": "node src/app.js",
-    "build": "npm install && npm run build"
+    "start": "node src/src/app.js ",
+    "build": "nvm use 16.13 && npm install && npm run build"
   },
   "keywords": [],
   "author": "",
