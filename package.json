@@ -11,6 +11,9 @@
     "start": "npm install && prisma generate",
     "build": "nvm use 16.13 && npm install && npm run build"
   },
+  "engines": {
+    "node": "16.13.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
